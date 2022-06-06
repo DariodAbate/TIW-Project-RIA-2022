@@ -1,6 +1,6 @@
 # TIW-Project-2022
 Official repository for web technologies exam; the course has been held at Politecnico di Milano by Prof. Fraternali Piero.
-This folder contains the version of the avascript version.
+This folder contains the version of the javascript version.
 
 ## The Team
 - ### [Dario d'Abate](https://github.com/DariodAbate)<br/>dario.dabate@mail.polimi.it
@@ -8,7 +8,6 @@ This folder contains the version of the avascript version.
 
 ## Languages
 - Java Enterprise Edition
-- Thymeleaf templating
 - HTML
 - CSS
-
+- Javascript
