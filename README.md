@@ -11,4 +11,4 @@ This folder contains the version of the avascript version.
 - Thymeleaf templating
 - HTML
 - CSS
-- Javascript
+
