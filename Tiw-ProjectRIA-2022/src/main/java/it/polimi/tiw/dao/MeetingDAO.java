@@ -54,7 +54,7 @@ public class MeetingDAO {
 	 * @return the auto-generated key associated to the meeting created
 	 * @throws SQLException
 	 */
-	public int createMeeting(Meeting meeting) throws SQLException {
+	private int createMeeting(Meeting meeting) throws SQLException {
 		String query = "INSERT into `meeting` (`title`, `date`, `time`, `duration`, `maxParticipant`) VALUES (?, ?, ?, ?, ?)";
 		try(PreparedStatement pstatement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);){
 			pstatement.setString(1, meeting.getTitle());
@@ -83,7 +83,7 @@ public class MeetingDAO {
 	 * @param creator true if the user inserted is the creator of this meeting, false if it is a guest
 	 * @throws SQLException
 	 */
-	public void createParticipant(int idUser, int idMeeting, boolean creator) throws SQLException {
+	private void createParticipant(int idUser, int idMeeting, boolean creator) throws SQLException {
 		String query = "INSERT into `participation` (`idUser`, `idMeeting`, `isCreator`) VALUES (?, ?, ?)";
 		try(PreparedStatement pstatement = con.prepareStatement(query);){
 			pstatement.setInt(1, idUser);
@@ -91,6 +91,31 @@ public class MeetingDAO {
 			pstatement.setBoolean(3, creator);
 
 			pstatement.executeUpdate();
+		}
+	}
+	
+	/**
+	 * This method is used to create a new meeting and to invite the the selected users to it.
+	 * If one of the interaction with the database fails, roll back all the works
+	 * @param meeting meeting that will be created
+	 * @param idCreator id of the user that created the meeting
+	 * @param idUsersInvited list of id of the users that has been invited
+	 * @throws SQLException
+	 */
+	public void createMeetingWithParticipants(Meeting meeting, int idCreator, ArrayList<Integer> idUsersInvited) throws SQLException{
+		con.setAutoCommit(false);//delimit of transaction
+		try {
+			int generatedIdMeeting = createMeeting(meeting);
+			//saving creator of the meeting
+			createParticipant(idCreator, generatedIdMeeting, true);
+			//saving participant of the meeting
+			for(int idUser: idUsersInvited) 	
+				createParticipant(idUser, generatedIdMeeting, false);
+			con.commit();
+			
+		}catch(SQLException e) {//if one of the updates fails, roll back all the work
+			con.rollback();
+			throw e;
 		}
 	}
 		

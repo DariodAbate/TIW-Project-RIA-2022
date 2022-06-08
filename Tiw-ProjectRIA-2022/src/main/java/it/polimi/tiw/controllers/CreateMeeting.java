@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Enumeration;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -157,42 +158,48 @@ public class CreateMeeting extends HttpServlet {
 		m.setMaxParticipant(maxParticipant);
 		
 		MeetingDAO meetingDAO = new MeetingDAO(connection);
-		int generatedIdMeeting;
-		try {
-			generatedIdMeeting = meetingDAO.createMeeting(m);
-		}catch(SQLException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("Cannot create a new meeting");
-			return;
-		}
-		
-		//saving participatipant of that meeting
-		ArrayList<Integer> userList = (ArrayList<Integer>) request.getAttribute("invitedPeople");
-		if(userList == null) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("Cannot save the participant for a meeting");
-			return;
-		}
-		
-		for(int idUser: userList) {
+	
+		//get participants of a meeting
+		ArrayList<Integer> userList = new ArrayList<>();
+		Enumeration<String> selectedUser = request.getParameterNames();
+		while(selectedUser.hasMoreElements()) {
+			String idUserString = request.getParameter(selectedUser.nextElement());
+			int idUser = -1;
 			try {
-				meetingDAO.createParticipant(idUser, generatedIdMeeting, false);
-			}catch(SQLException e) {
+				idUser = Integer.parseInt(idUserString);
+			}catch(NumberFormatException e) {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.getWriter().println("Cannot save the participant for a meeting");
+				response.getWriter().println("Cannot check the selected user");
 				return;
 			}
+			
+			userList.add(idUser);
 		}
 		
-		//saving creator of that meeting
+		//not enough selection
+		if(userList.isEmpty()) {//not enough selection
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Select at least one user.");
+			return;	
+		}
+		
+		//too much participant
+		if(userList.size() > maxParticipant) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Too many users selected");
+			return;	
+		}
+		
+		//get creator of that meeting
 		HttpSession session = request.getSession();
 		User creator = (User) session.getAttribute("user");
 		int idUserCreator = creator.getIdUser();
+		
 		try {
-			meetingDAO.createParticipant(idUserCreator, generatedIdMeeting,true);
+			meetingDAO.createMeetingWithParticipants(m, idUserCreator, userList);
 		}catch(SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("Cannot save the participant for a meeting");
+			response.getWriter().println("Cannot create a new meeting");
 			return;
 		}
 		
