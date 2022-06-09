@@ -63,8 +63,10 @@ public class CheckRegistration extends HttpServlet {
 		try {
 			registeredUser = userDAO.findAllUsers();
 		}catch(SQLException e) {
+			e.printStackTrace();
+			
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("Cannot check the uesername");	
+			response.getWriter().println("Cannot check the username");	
 			return;
 		}
 		
@@ -84,6 +86,8 @@ public class CheckRegistration extends HttpServlet {
 			
 			userDAO.registerUser(u);
 		}catch(SQLException e) {
+			e.printStackTrace();
+			
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Cannot create a new user");	
 			return;

@@ -33,6 +33,7 @@ import it.polimi.tiw.utils.ConnectionHandler;
 public class CreateMeeting extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
+	private static final int MAX_ATTEMPTS = 3;
 	
     public CreateMeeting() {
         super();
@@ -52,11 +53,13 @@ public class CreateMeeting extends HttpServlet {
 		String timeString = request.getParameter("time");
 		String durationString = request.getParameter("duration");
 		String maxParticipantString = request.getParameter("maxPart");
+		String numAttemptString = request.getParameter("numAttempts");
 				
 		if(title == null || title.isEmpty() || dateString == null || dateString.isEmpty() 
 				|| timeString == null || timeString.isEmpty()
 				|| durationString == null || durationString.isEmpty()
-				|| maxParticipantString == null || maxParticipantString.isEmpty()) {
+				|| maxParticipantString == null || maxParticipantString.isEmpty()
+				|| numAttemptString == null || numAttemptString.isEmpty()) {
 			
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("missing parameters");
@@ -143,10 +146,29 @@ public class CreateMeeting extends HttpServlet {
 				return;
 			}
 		} catch(NumberFormatException e1) {
+			e1.printStackTrace();
+			
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Bad Number format");
 			return;
 			
+		}
+		
+		//parsing numAttempts
+		int numAttempts = -1;
+		try {
+			numAttempts = Integer.parseInt(numAttemptString);
+			if(numAttempts >= MAX_ATTEMPTS || numAttempts < 0) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				response.getWriter().println("Invalid number of attempts to define a meeting");
+				return;
+			}
+		}catch(NumberFormatException e1) {
+			e1.printStackTrace();
+
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Bad Number format");
+			return;
 		}
 		
 		//pack data into a bean
@@ -162,18 +184,31 @@ public class CreateMeeting extends HttpServlet {
 		//get participants of a meeting
 		ArrayList<Integer> userList = new ArrayList<>();
 		Enumeration<String> selectedUser = request.getParameterNames();
+
+		
 		while(selectedUser.hasMoreElements()) {
-			String idUserString = request.getParameter(selectedUser.nextElement());
+			String paramName = selectedUser.nextElement();
+			String idUserString = null;
 			int idUser = -1;
-			try {
-				idUser = Integer.parseInt(idUserString);
-			}catch(NumberFormatException e) {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.getWriter().println("Cannot check the selected user");
-				return;
+
+			//parse the user list
+			if(!(paramName.equals("title") || paramName.equals("date") ||
+					paramName.equals("time") || paramName.equals("duration") || 
+					paramName.equals("maxPart") || paramName.equals("numAttempts"))) {
+				idUserString = request.getParameter(paramName);
+				
+				try {
+					idUser = Integer.parseInt(idUserString);
+				}catch(NumberFormatException e) {
+					e.printStackTrace();
+					
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					response.getWriter().println("Cannot check the selected user");
+					return;
+				}
+				
+				userList.add(idUser);
 			}
-			
-			userList.add(idUser);
 		}
 		
 		//not enough selection
@@ -198,6 +233,8 @@ public class CreateMeeting extends HttpServlet {
 		try {
 			meetingDAO.createMeetingWithParticipants(m, idUserCreator, userList);
 		}catch(SQLException e) {
+			e.printStackTrace();
+			
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Cannot create a new meeting");
 			return;

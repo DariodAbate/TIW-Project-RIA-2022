@@ -46,6 +46,8 @@ public class GetRegisteredUserData extends HttpServlet {
 			String usernameCreator = user.getUsername();
 			usersInvitable = userDAO.findUsersExceptCreator(usernameCreator);
 		}catch(SQLException e) {
+			e.printStackTrace();
+			
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Cannot get users list");
 			return;
