@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<script src="./resources/Utils.js" charset="utf-8" defer></script>
+<script src="./resources/LoginPageManager.js" charset="utf-8" defer></script>
+<title>Login page</title>
+</head>
+<body>
+	<h1>Welcome to the meetings management application</h1>
+	
+	<h4>Login</h4>	
+	<form method="post" action="#">
+		<br> Username:<input name="username" type="text" required >
+		<br> Password:<input name="password" type="password" required > 
+		<br> <input id="LoginButton" type="button" value="Sign in">
+	</form>
+	<p id="errorMessageLogin"> </p>
+	
+	
+	<h4>Register</h4>	
+	<form class = "register" method="post" action="#">
+		<br> Username:<input name="newUsername" type="text" required >
+		<br> Mail:<input name="newMail" type="email" required >
+		<br> Password:<input name="newPassword" type="password" required >
+		<br> Repeat password:<input name="newRepeatedPassword" type="password" required >
+		<br> <input id="RegistratonButton" type="button" value="Sign up">
+	</form>
+	<p id="errorMessageRegistration"> </p>
+	<p id="OKMessageRegistration"> </p>
+	
+</body>
+</html>

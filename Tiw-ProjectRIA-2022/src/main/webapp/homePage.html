@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<script src="./resources/Utils.js" charset="utf-8" defer></script>
+<script src="./resources/HomePageManager.js" charset="utf-8" defer></script>
+<script src="https://kit.fontawesome.com/bd3a7b47a9.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="MyFile.css">
+<title>Home page</title>
+</head>
+<body>
+	<h3>Home page</h3>
+	
+	<p id="messageContainer"></p>
+	
+	<div id="meetingTable">
+	
+		<h4>Meetings created by you</h4>
+		<table bgcolor="black">
+			<thead>
+				<tr bgcolor="grey">
+					<th>Title</th>
+					<th>Date</th>
+					<th>Time</th>
+					<th>Duration</th>
+					<th>Maximum participants</th>
+				
+				</tr>
+			</thead>
+			<tbody id="meetingCreatedTableBody">
+			</tbody>
+		</table>
+	
+		<h4>Meetings you have been invited to</h4>
+		<table bgcolor="black">
+			<thead>
+				<tr bgcolor="grey">
+					<th>Title</th>
+					<th>Date</th>
+					<th>Time</th>
+					<th>Duration</th>
+					<th>Maximum participants</th>
+				
+				</tr>
+			</thead>
+			<tbody id="meetingInvitedTableBody">
+			</tbody>
+		</table>
+	
+	</div>
+	
+	<div id="meetingFormContainer">
+	
+		<h4>Create a meeting</h4>
+		<form method="post" action="#">
+			<br> Title: <input name="title" type="text" required >
+			<br> Date: <input name="date" type="date" required > 
+			<br> Time: <input name="time" type="time" required >
+			<br> Duration: <input name="duration" type="number" required >
+			<br> Maximum participants: <input name="maxPart" type="number" required >
+			<br> <input name="CreateButton" type="button" value="create">
+		</form>
+	
+	</div>
+	
+	<div id="modalWindowContainer">
+		<div id ="modalContent">
+			<h5>Choose the users to invite</h5>
+			<form method ="post" action="#">
+				<div id="divMW"></div>
+				<br> <input name="InviteButton" type="button" value="send">
+			 	<input name="CancelButton" type="button" value="cancel">
+			</form>
+			<p id="errorMessageMW"></p>	
+		</div>
+		
+	</div>
+	
+
+
+
+	<p>
+		<a href="Logout"> Back to the Login Page </a>
+	</p>
+
+</body>
+</html>

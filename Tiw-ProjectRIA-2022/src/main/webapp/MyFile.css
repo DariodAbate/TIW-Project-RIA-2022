@@ -1,0 +1,27 @@
+@charset "ISO-8859-1";
+
+
+* {font-family: Georgia, serif;
+}
+
+#modalWindowContainer {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	background-color: rgba(0,0,0,0.5);
+}
+
+#modalContent {
+	max-width: 600px;
+	height: 600px;
+	margin: auto;
+	background-color: white;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
