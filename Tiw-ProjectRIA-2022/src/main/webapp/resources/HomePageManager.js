@@ -224,7 +224,11 @@
                     this.meetingForm.querySelector('input[name="time"]').style.borderColor = ""; //reset border
 
                     //time cannot be in the past
-                    let formattedTime = today.getHours() + ":" + today.getMinutes();
+                    let formattedTime = ('0'+ today.getHours()).substr(-2); //to have 09:00 instead 9:00
+                    //-2 takes the last two characters of the string
+                    
+                    formattedTime = formattedTime + ":" + today.getMinutes();
+                    
                     let selectedTime = this.meetingForm.querySelector('input[name="time"]').value;
                     let selectedDate = this.meetingForm.querySelector('input[name="date"]').value;
 
