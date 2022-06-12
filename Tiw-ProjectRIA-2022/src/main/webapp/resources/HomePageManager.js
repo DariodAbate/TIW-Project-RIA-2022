@@ -218,6 +218,7 @@
         }
 
         this.registerEvents = function(orchestrator){
+	
             //manage create button
             this.meetingForm.querySelector('input[name="CreateButton"]')
             .addEventListener("click", (e) => {
@@ -255,6 +256,7 @@
 
                 }, false);
 
+			//manage invite button
             this.modalWindowContainer.querySelector('input[name="InviteButton"]')
             .addEventListener("click", (e) => {
                     var errorMessageMW = document.getElementById("errorMessageMW");
@@ -313,6 +315,7 @@
                     }
                 }, false);
 
+			//manage cancel button
             this.modalWindowContainer.querySelector('input[name="CancelButton"]')
             .addEventListener("click", (e) => {
                 this.dismissCreation();

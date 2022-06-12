@@ -1,7 +1,7 @@
 (function(){//iife
 
-    URL_CHECK_LOGIN = "CheckPassword";
-    URL_CHECK_REGISTRATION = "CheckRegistration"
+    const URL_CHECK_LOGIN = "CheckPassword";
+    const URL_CHECK_REGISTRATION = "CheckRegistration"
     
     //sign-in management
     document.getElementById("LoginButton").addEventListener("click", (e) =>{
