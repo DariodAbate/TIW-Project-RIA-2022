@@ -235,7 +235,6 @@
 
                     if(this.meetingForm.checkValidity()){
                         if(selectedDate != formattedDate || selectedTime >= formattedTime){
-                            e.preventDefault();
                             this.meetingFormContainer.style.visibility = "hidden";
 
                             //save a copy of the meeting
