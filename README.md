@@ -5,6 +5,8 @@
 <b>Final score: 28/30 </b>
 
 ## Project specifications
+<p><em>The full discussion of the implementation can be found in Italian <a href="https://github.com/DariodAbate/TIW-Project-RIA-2022/blob/main/specifications/TIW_gruppo32.pptx">here</a></em>.</p>
+
 <p><em>This project was developed with a thick client architecture, using client-side javascript.</em></p>
 
 <p>The project consists of a web application that allows the management of online meetings. The application supports registration and login. A user can create meetings, inviting other registered users, or can view the meetings he has been invited to and which have not yet expired.</p>
